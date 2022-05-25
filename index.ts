@@ -1,10 +1,14 @@
 import express, { Express, Request, Response } from "express";
 import { caclcTotalAge, unifiedResponse } from "./helper";
 import { User } from "./types";
+import bodyParser from "body-parser";
 const cors = require("cors");
 const app: Express = express(); // instance of expresss => application
-app.use(cors());
 const port: number = 4000;
+
+app.use(cors());
+app.use(express.json({ limit: "20mb" }));
+app.use(express.urlencoded({ extended: true }));
 
 const users: User[] = [
    { name: "Mary", password: "test123" },
@@ -16,6 +20,11 @@ app.get("/", (req: Request, res: Response) => {
 });
 app.get("/users", (req: Request, res: Response) => {
    const responseObject = unifiedResponse(users);
+   res.json(responseObject);
+});
+app.post("/login", (req: Request, res: Response) => {
+   console.log(req.body);
+   const responseObject = unifiedResponse({ login: "login" });
    res.json(responseObject);
 });
 

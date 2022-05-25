@@ -7,8 +7,10 @@ const express_1 = __importDefault(require("express"));
 const helper_1 = require("./helper");
 const cors = require("cors");
 const app = (0, express_1.default)(); // instance of expresss => application
-app.use(cors());
 const port = 4000;
+app.use(cors());
+app.use(express_1.default.json({ limit: "20mb" }));
+app.use(express_1.default.urlencoded({ extended: true }));
 const users = [
     { name: "Mary", password: "test123" },
     { name: "John", password: "Ilovekittens" },
@@ -19,6 +21,11 @@ app.get("/", (req, res) => {
 });
 app.get("/users", (req, res) => {
     const responseObject = (0, helper_1.unifiedResponse)(users);
+    res.json(responseObject);
+});
+app.post("/login", (req, res) => {
+    console.log(req.body);
+    const responseObject = (0, helper_1.unifiedResponse)({ login: "login" });
     res.json(responseObject);
 });
 //TODO 1. instal bodyparser to accept post body
